@@ -29,4 +29,14 @@ public class JournalEntryController {
     public JournalEntry getJournalEntryById(@PathVariable Long myId){
         return journalEntries.get(myId);
     }
+
+    @DeleteMapping("/id/{myId}")
+    public JournalEntry deleteJournalEntryById(@PathVariable Long myId){
+        return journalEntries.remove(myId);
+    }
+
+    @PutMapping("/id/{myId}")
+    public JournalEntry updateJournalEntryById(@PathVariable Long myId, @RequestBody JournalEntry myEntry){
+        return journalEntries.put(myId,myEntry);
+    }
 }
