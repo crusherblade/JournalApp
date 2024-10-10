@@ -19,7 +19,8 @@ public class JournalEntryControllerV2 {
 
     @GetMapping
     public List<JournalEntry> getAll(){ //localhost:8080/journal Get
-        return null;
+
+        return journalEntryService.getAll();
     }
 
     @PostMapping
