@@ -5,6 +5,7 @@ import net.engineeringdigest.journalApp.service.JournalEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ public class JournalEntryControllerV2 {
 
     @PostMapping
     public boolean createEntry(@RequestBody JournalEntry myEntry){ //localhost:8080/journal Post
+        myEntry.setDate(LocalDateTime.now());
         journalEntryService.saveEntry(myEntry);
         return true;
     }
