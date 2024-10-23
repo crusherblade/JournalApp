@@ -35,4 +35,9 @@ public class UserEntryService {
     {
         userEntryRepository.deleteById(id);
     }
+
+    public User findByUserName(String userName)
+    {
+        return userEntryRepository.findByUserName(userName);
+    }
 }
