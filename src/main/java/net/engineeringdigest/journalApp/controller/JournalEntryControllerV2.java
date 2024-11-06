@@ -8,6 +8,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -22,19 +24,11 @@ public class JournalEntryControllerV2 {
     @Autowired
     private UserEntryService userEntryService;
 
-    @GetMapping
-    public ResponseEntity<?> getAllJournalEntries(){ //localhost:8080/journal Get
-
-        List<JournalEntry> all = journalEntryService.getAll();
-        if( all != null && !all.isEmpty())
-            return new ResponseEntity<>(all, HttpStatus.OK);
-
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
-    }
-
-    @GetMapping("/{userName}") //Find all journals of a user
-    public ResponseEntity<?> getAllJournalEntriesOfUser(@PathVariable String userName)
+    @GetMapping //Find all journals of a user
+    public ResponseEntity<?> getAllJournalEntriesOfUser()
     {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
         User user = userEntryService.findByUserName(userName);
         List<JournalEntry> all = user.getJournalEntries();
         if(all != null && !all.isEmpty())
@@ -45,9 +39,11 @@ public class JournalEntryControllerV2 {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/{userName}")
-    public ResponseEntity<JournalEntry> createEntry(@RequestBody JournalEntry myEntry, @PathVariable String userName){ //localhost:8080/journal Post
+    @PostMapping()
+    public ResponseEntity<JournalEntry> createEntry(@RequestBody JournalEntry myEntry){ //localhost:8080/journal Post
         try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userName = authentication.getName();
             journalEntryService.saveEntry(myEntry, userName);
             return new ResponseEntity<>(myEntry, HttpStatus.CREATED);
         } catch (Exception e) {
