@@ -1,6 +1,5 @@
 package net.engineeringdigest.journalApp.service;
 
-import net.engineeringdigest.journalApp.entity.JournalEntry;
 import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.repository.UserEntryRepository;
 import org.bson.types.ObjectId;
@@ -21,11 +20,15 @@ public class UserEntryService {
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public void saveEntry(User userEntry)
+    public void saveNewEntry(User userEntry)
     {
         userEntry.setPassword(passwordEncoder.encode(userEntry.getPassword()));
         userEntry.setRoles(Arrays.asList("USER"));
         userEntryRepository.save(userEntry);
+    }
+
+    public void saveUser(User user){
+        userEntryRepository.save(user);
     }
 
     public List<User> getAll()
