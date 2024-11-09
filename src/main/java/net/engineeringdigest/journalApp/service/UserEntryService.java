@@ -27,6 +27,12 @@ public class UserEntryService {
         userEntryRepository.save(userEntry);
     }
 
+    public void saveAdmin(User userEntry) {
+        userEntry.setPassword(passwordEncoder.encode(userEntry.getPassword()));
+        userEntry.setRoles(Arrays.asList("USER", "ADMIN"));
+        userEntryRepository.save(userEntry);
+    }
+
     public void saveUser(User user){
         userEntryRepository.save(user);
     }
@@ -50,4 +56,5 @@ public class UserEntryService {
     {
         return userEntryRepository.findByUserName(userName);
     }
+
 }
